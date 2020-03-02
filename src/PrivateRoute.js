@@ -13,7 +13,7 @@ function PrivateRoute({ component: Component, ...rest }) {
         authTokens.isUserLoggedIn ? (
           <Component {...props} />
         ) : (
-            <Redirect to="/" />
+            <Redirect exact to="/" />
           )
       }
     />
