@@ -7,13 +7,12 @@ import logoImg from "../img/google.jpg";
 import { useAuth } from "../context/auth";
 
 function Login(props) {
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
   const { setAuthTokens } = useAuth();
+  const { isUserLoggedIn } = localStorage
 
   const responseGoogleSuccess = (response) => {
     setAuthTokens(response)
-    setLoggedIn(true);
   }
 
   const responseGoogleFailure = (response) => {
@@ -21,7 +20,7 @@ function Login(props) {
     setIsError(true)
   }
 
-  if (isLoggedIn) {
+  if (isUserLoggedIn) {
     return <Redirect to="/main" />;
   }
 
@@ -30,7 +29,7 @@ function Login(props) {
       <Logo src={logoImg} />
       <Form>
         <GoogleLogin
-          clientId="Your clientId"
+          clientId="338418438369-v797jdnmlc8m960nrf3en4iajaloer41.apps.googleusercontent.com"
           buttonText="Log in with Google"
           onSuccess={responseGoogleSuccess}
           onFailure={responseGoogleFailure}

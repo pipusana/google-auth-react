@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 import { AuthContext } from "./context/auth";
+import Info from './pages/Info';
 import Login from "./pages/Login";
 import Main from './pages/Main';
 import NotFoundPage from './pages/Notfoundpage'
@@ -13,17 +14,36 @@ function App(props) {
     isUserLoggedIn: false
   }
   const [authTokens, setAuthTokens] = useState(defaultAuth);
+  const { userDetails, isUserLoggedIn } = localStorage
+
+  console.log('localStorage', localStorage)
+
 
   const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
+    const isUserLoggedIn = true
+    const userDetails = {
+      ...data.profileObj
+    }
+
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    localStorage.setItem("isUserLoggedIn", isUserLoggedIn)
 
     setAuthTokens({
-      userDetails: {
-        ...data.profileObj
-      },
-      isUserLoggedIn: true
+      userDetails,
+      isUserLoggedIn
     });
   }
+
+  useEffect(() => {
+    console.log('useEffect ====>', useEffect)
+    if (isUserLoggedIn) {
+      console.log('-------- App setAuthTokens ---------')
+      setAuthTokens({
+        userDetails: JSON.parse(userDetails),
+        isUserLoggedIn,
+      });
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
@@ -31,6 +51,7 @@ function App(props) {
         <div>
           <Switch>
             <Route exact path="/" component={Login} />
+            <PrivateRoute path="/info" component={Info} />
             <PrivateRoute path="/main" component={Main} />
             <Route component={NotFoundPage} />
           </Switch>
