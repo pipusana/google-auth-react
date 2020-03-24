@@ -7,9 +7,15 @@ import logoImg from "../img/google.jpg";
 import { useAuth } from "../context/auth";
 
 function Login(props) {
+  console.log('----------- Login')
   const [isError, setIsError] = useState(false);
   const { setAuthTokens } = useAuth();
   const { isUserLoggedIn } = localStorage
+
+  let referer = '/main'
+  if (props.location.state && props.location.state.referer && props.location.state.referer.pathname) {
+    referer = props.location.state.referer.pathname
+  }
 
   const responseGoogleSuccess = (response) => {
     setAuthTokens(response)

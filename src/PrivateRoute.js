@@ -16,7 +16,7 @@ function PrivateRoute({ component: Component, ...rest }) {
         isUserLoggedIn ? (
           <Component {...props} />
         ) : (
-            <Redirect exact to="/" />
+            <Redirect to={{ pathname: "/", state: { referer: props.location } }} />
           )
       }
     />
